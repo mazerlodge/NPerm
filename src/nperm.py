@@ -131,32 +131,39 @@ class NPermEngine:
 			
 	def go(self): 
 
-		for m in range(9,0,-1):
-			self.debugMsg("Processing m=%d" % m) 
-			r = self.targetVal 
-			self.workingList = []
-			for c in range(m,0,-1): 
-				if (self.isSkipVal(c)):
-					self.debugMsg("\tSkipping skipVal c=%d" % c) 
-					continue 
+		# set up single digit skipping in range 8 - 3 
+		for skipDigit in range(9, 2, -1): 
+			# on first cycle (where skipDigit = 9) don't skip anything
+			# Note: user input skip values via -s parameter will still apply on first cycle only.
+			if (skipDigit < 9): 
+				self.skipList = [skipDigit]
 
-				if (c>r):
-					self.debugMsg("\tSkipping c>r w/ c=%d and r=%d" % (c, r)) 
-					continue 
-				else: 
-					# c fits, but would it drive to zero prematurely.
-					if (self.isRemainderZeroPremature(c,r)):
-						self.debugMsg("Skipping premature zero w/ c=%d and r=%d" % (c, r)) 
-						continue
-					r -= c
-					self.workingList.append(c) 
-					self.debugMsg("\tUsing c=%d" % c) 
+			for m in range(9,0,-1):
+				self.debugMsg("Processing m=%d" % m) 
+				r = self.targetVal 
+				self.workingList = []
+				for c in range(m,0,-1): 
+					if (self.isSkipVal(c)):
+						self.debugMsg("\tSkipping skipVal c=%d" % c) 
+						continue 
+
+					if (c>r):
+						self.debugMsg("\tSkipping c>r w/ c=%d and r=%d" % (c, r)) 
+						continue 
+					else: 
+						# c fits, but would it drive to zero prematurely.
+						if (self.isRemainderZeroPremature(c,r)):
+							self.debugMsg("Skipping premature zero w/ c=%d and r=%d" % (c, r)) 
+							continue
+						r -= c
+						self.workingList.append(c) 
+						self.debugMsg("\tUsing c=%d" % c) 
+					
+					if (r==0):
+						break
 				
-				if (r==0):
-					break
-			
-			if(self.isElementListLengthValid() and self.isElementListSumValid()):
-				self.showWorkingList()
+				if(self.isElementListLengthValid() and self.isElementListSumValid()):
+					self.showWorkingList()
 
 
 # Entry point 
