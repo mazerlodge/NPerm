@@ -117,6 +117,17 @@ class NPermEngine:
 				break 
 
 		return(bRval) 
+
+	def isRemainderZeroPremature(self, c, r): 
+		# Return true if the candidate value would drive the remainder to zero prematurely 
+		bRval = False
+
+		if (r-c == 0) and (len(self.workingList) < self.nElements-1):
+			bRval = True 
+
+		self.debugMsg("\t\tiRZP w/ c/r/len %d / %d / %d / %s" % (c, r, len(self.workingList), bRval))
+
+		return(bRval) 
 			
 	def go(self): 
 
@@ -126,16 +137,20 @@ class NPermEngine:
 			self.workingList = []
 			for c in range(m,0,-1): 
 				if (self.isSkipVal(c)):
-					self.debugMsg("Skipping c=%d" % c) 
+					self.debugMsg("\tSkipping skipVal c=%d" % c) 
 					continue 
 
 				if (c>r):
-					self.debugMsg("Skipping c>r w/ c=%d and r=%d" % (c, r)) 
+					self.debugMsg("\tSkipping c>r w/ c=%d and r=%d" % (c, r)) 
 					continue 
 				else: 
+					# c fits, but would it drive to zero prematurely.
+					if (self.isRemainderZeroPremature(c,r)):
+						self.debugMsg("Skipping premature zero w/ c=%d and r=%d" % (c, r)) 
+						continue
 					r -= c
 					self.workingList.append(c) 
-					self.debugMsg("Using c=%d" % c) 
+					self.debugMsg("\tUsing c=%d" % c) 
 				
 				if (r==0):
 					break

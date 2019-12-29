@@ -16,6 +16,11 @@ Sample Invocation:
 	- Initial version 
 	- Added param for skip value as work around until systematic skipping can be added. 
 	- Changed skip parameter to allow accepting a CSV List of values to skip 
+
+12/29 (U) 
+	- Added branch Prematuer_Zero_Check
+	- Detects where current candidate value would drive remainder to zero prematurely	
+	- Incomplete solution, still misses t12n4 = 6, 3, 2, 1 (requires multiple skips) 
 	
 > In-Progress 
 
