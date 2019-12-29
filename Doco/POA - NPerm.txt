@@ -18,13 +18,15 @@ Sample Invocation:
 	- Changed skip parameter to allow accepting a CSV List of values to skip 
 
 12/29 (U) 
+	- Add code to handle skipping without having to specify individual skip values 
 	- Added branch Prematuer_Zero_Check
 	- Detects where current candidate value would drive remainder to zero prematurely	
 	- Incomplete solution, still misses t12n4 = 6, 3, 2, 1 (requires multiple skips) 
-	
+	- Created branch Auto_skip_single_digits (does as name implies) 
+	- Created branch Auto_skip_all_combos, seems to resolve issue with missing some results with multi-skips 
+
 > In-Progress 
 
 > Next: 
-	- Add code to handle skipping without having to specify individual skip values 
 
 

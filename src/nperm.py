@@ -11,6 +11,8 @@ class NPermEngine:
 	skipList = []
 	useList = [] 
 	workingList = []
+	uniqueResults = []
+	sdp = {} # skip digit dictionary of permutations
 
 	def __init__(self, argv): 
 
@@ -129,14 +131,88 @@ class NPermEngine:
 
 		return(bRval) 
 			
+
+	def genSkipDigitPermutations(self): 
+		# Generate skip digit list in range 8-3 for all possible combos. 
+		sdp = {0:""}
+		cycle=1
+
+		# do single digit 
+		for i in range(8,3,-1):
+			self.sdp[cycle] = str(i) 
+			cycle += 1
+			self.debugMsg("gSDP() c=%d : %d " % (cycle,i))
+
+		# do 2 digits 
+		for i in range(8,3,-1):
+			for j in range(i-1,2,-1):
+				self.sdp[cycle] = "%d,%d" % (i,j)
+				cycle += 1
+				self.debugMsg("gSDP() %d %d" % (i,j))
+
+		# do 3 digits 
+		for i in range(8,3,-1):
+			for j in range(i-1,2,-1):
+				for k in range(j-1,2,-1):
+					self.sdp[cycle] = "%d,%d,%d" % (i,j,k)
+					cycle += 1
+					self.debugMsg("gSDP() %d %d %d" % (i,j, k))
+
+		# do 4 digits 
+		for i in range(8,3,-1):
+			for j in range(i-1,2,-1):
+				for k in range(j-1,2,-1):
+					for l in range(k-1,2,-1):
+						self.sdp[cycle] = "%d,%d,%d,%d" % (i,j,k,l)
+						cycle += 1
+						self.debugMsg("gSDP() %d %d %d %d" % (i,j, k, l))
+
+		# do 5 digits 
+		for i in range(8,3,-1):
+			for j in range(i-1,2,-1):
+				for k in range(j-1,2,-1):
+					for l in range(k-1,2,-1):
+						for m in range(l-1,2,-1):
+							self.sdp[cycle] = "%d,%d,%d,%d,%d" % (i,j,k,l,m)
+							cycle += 1
+							self.debugMsg("gSDP() %d %d %d %d %d" % (i,j, k, l, m))
+
+		# do 6 digits, doesn't need to be a loop, only prints 8 7 6 5 4 3 
+		for i in range(8,3,-1):
+			for j in range(i-1,2,-1):
+				for k in range(j-1,2,-1):
+					for l in range(k-1,2,-1):
+						for m in range(l-1,2,-1):
+							for n in range(m-1,2,-1):
+								self.sdp[cycle] = "%d,%d,%d,%d,%d,%d" % (i,j,k,l,m,n)
+								cycle += 1
+								self.debugMsg("gSDP() %d %d %d %d %d %d" % (i,j, k, l, m, n))
+
+
+	def setSkipListToCycle(self, cycle):
+
+		# clear the existing skipList 
+		self.skipList = []
+
+		# Check for calls w/ invalid cycle numbers 
+		if (cycle > len(self.sdp)):
+			return 
+
+		# retrieve the specified skip list and parse it into skipList.
+		skipListAsChar = self.sdp[cycle].split(",")
+		for x in skipListAsChar:
+			self.skipList.append(int(x))
+
+
 	def go(self): 
 
-		# set up single digit skipping in range 8 - 3 
-		for skipDigit in range(9, 2, -1): 
-			# on first cycle (where skipDigit = 9) don't skip anything
+		# set up single digit skipping for all combos in range 8-3
+		self.genSkipDigitPermutations() 
+		for cycle in range(0, len(self.sdp)): 
+			# on first cycle (where sdp dictionary entry is an empty string) don't skip anything
 			# Note: user input skip values via -s parameter will still apply on first cycle only.
-			if (skipDigit < 9): 
-				self.skipList = [skipDigit]
+			if (cycle > 0): 
+				self.setSkipListToCycle(cycle) 
 
 			for m in range(9,0,-1):
 				self.debugMsg("Processing m=%d" % m) 
@@ -163,7 +239,9 @@ class NPermEngine:
 						break
 				
 				if(self.isElementListLengthValid() and self.isElementListSumValid()):
-					self.showWorkingList()
+					if self.workingList not in self.uniqueResults:
+							self.uniqueResults.append(self.workingList)
+							self.showWorkingList()
 
 
 # Entry point 
