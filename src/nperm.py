@@ -8,7 +8,7 @@ class NPermEngine:
 	bInDebug = False 
 	targetVal = 0 
 	nElements = 0 
-	skipVal = 0
+	skipList = []
 	useList = [] 
 	workingList = []
 
@@ -49,7 +49,10 @@ class NPermEngine:
 			self.debugMsg("Parse Arg -n failed.")
 		
 		if (ap.isInArgs("-s", True)): 
-			self.skipVal = int(ap.getArgValue("-s"))
+			skipRaw = ap.getArgValue("-s")
+			skipListAsChar = skipRaw.split(",")
+			for x in skipListAsChar:
+				self.skipList.append(int(x))
 
 		if (ap.isInArgs("-u", True)): 
 			useRaw = ap.getArgValue("-u")
@@ -105,6 +108,15 @@ class NPermEngine:
 
 		return bRval
 
+	def isSkipVal(self, val): 
+		bRval = False 
+
+		for av in self.skipList:
+			if (av == val): 
+				bRval = True 
+				break 
+
+		return(bRval) 
 			
 	def go(self): 
 
@@ -113,7 +125,7 @@ class NPermEngine:
 			r = self.targetVal 
 			self.workingList = []
 			for c in range(m,0,-1): 
-				if (c == self.skipVal):
+				if (self.isSkipVal(c)):
 					self.debugMsg("Skipping c=%d" % c) 
 					continue 
 
@@ -123,6 +135,7 @@ class NPermEngine:
 				else: 
 					r -= c
 					self.workingList.append(c) 
+					self.debugMsg("Using c=%d" % c) 
 				
 				if (r==0):
 					break

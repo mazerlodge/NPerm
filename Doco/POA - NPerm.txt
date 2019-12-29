@@ -15,9 +15,9 @@ Sample Invocation:
 12/28 (S) 
 	- Initial version 
 	- Added param for skip value as work around until systematic skipping can be added. 
-
+	- Changed skip parameter to allow accepting a CSV List of values to skip 
+	
 > In-Progress 
-	- Diagnostics on invocation with -t 12 -n 4 -s 4 should output 6, 3, 2, 1 as a solution but doesn't
 
 > Next: 
 	- Add code to handle skipping without having to specify individual skip values 
