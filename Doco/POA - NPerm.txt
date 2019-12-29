@@ -1,0 +1,25 @@
+POA - NPerm 
+
+Goal - Create a python app that outputs possible numeric permutations for Kakuro puzzles. 
+
+Sample Invocation: 
+./nperm.py -t 12 -n 4 -s 4 -debug
+	-t target value (12) 
+	-n number of elements in result (in this case 4) 
+	-s skip value (optional param), in this case skip the number 4 
+	-debug optional parameter to output diagnostic information 
+
+
+==== Activity Log - 201912 ====
+
+12/28 (S) 
+	- Initial version 
+	- Added param for skip value as work around until systematic skipping can be added. 
+
+> In-Progress 
+	- Diagnostics on invocation with -t 12 -n 4 -s 4 should output 6, 3, 2, 1 as a solution but doesn't
+
+> Next: 
+	- Add code to handle skipping without having to specify individual skip values 
+
+

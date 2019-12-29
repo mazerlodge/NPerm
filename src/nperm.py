@@ -8,6 +8,7 @@ class NPermEngine:
 	bInDebug = False 
 	targetVal = 0 
 	nElements = 0 
+	skipVal = 0
 	useList = [] 
 	workingList = []
 
@@ -47,6 +48,9 @@ class NPermEngine:
 			bRval = False 
 			self.debugMsg("Parse Arg -n failed.")
 		
+		if (ap.isInArgs("-s", True)): 
+			self.skipVal = int(ap.getArgValue("-s"))
+
 		if (ap.isInArgs("-u", True)): 
 			useRaw = ap.getArgValue("-u")
 			useListAsChar = useRaw.split(",")
@@ -82,7 +86,7 @@ class NPermEngine:
 			bRval = True
 
 		if (not bRval):
-			self.debugMsg("Element list length %d is not valid, looking for %d." % (wll, self.nElements))
+			self.debugMsg("Element list length %d is not valid" % wll)
 
 		return bRval
 
@@ -109,6 +113,10 @@ class NPermEngine:
 			r = self.targetVal 
 			self.workingList = []
 			for c in range(m,0,-1): 
+				if (c == self.skipVal):
+					self.debugMsg("Skipping c=%d" % c) 
+					continue 
+
 				if (c>r):
 					self.debugMsg("Skipping c>r w/ c=%d and r=%d" % (c, r)) 
 					continue 
