@@ -28,5 +28,5 @@ Sample Invocation:
 > In-Progress 
 
 > Next: 
-
+	- Given a list of targets and lengths (e.g. 10,2 and 28,5 maybe as rows in a file) output those w/ a single solution 
 
